@@ -1,0 +1,4 @@
+Java Development Kit (JDK) 17 or later
+Apache Maven 3.9 or later
+
+Project dependencies are managed by Maven in pom.xml. No Python packages are required to build or run the Java application.
