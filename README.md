@@ -1,4 +1,4 @@
-# Java Redis Clone
+# Redis-like In-memory Cache Database
 
 This is a Java 17 and Spring Boot implementation of the Redis-like cache in the original Python project. It provides basic Redis-style commands through a REST API. It is an educational project and is not the official Redis server.
 
