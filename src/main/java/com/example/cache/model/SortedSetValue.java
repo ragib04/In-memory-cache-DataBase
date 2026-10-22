@@ -1,10 +1,10 @@
-package com.example.redisclone.model;
+package com.example.cache.model;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeSet;
 
-public final class SortedSetValue implements RedisValue {
+public final class SortedSetValue implements Value {
     private final TreeSet<ScoredMember> members = new TreeSet<>();
     private final Map<String, Double> scores = new HashMap<>();
 

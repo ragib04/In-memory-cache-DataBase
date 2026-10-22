@@ -1,4 +1,4 @@
-package com.example.redisclone.model;
+package com.example.cache.model;
 
 public record ScoredMember(double score, String member) implements Comparable<ScoredMember> {
     @Override
