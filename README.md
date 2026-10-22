@@ -178,7 +178,7 @@ mvn test
 
 ## Questions
 
-### 2. What further improvements could be made?
+### 1. What further improvements could be made?
 
 Possible improvements include:
 
@@ -187,7 +187,7 @@ Possible improvements include:
 - **Command coverage:** Implement more Redis-like commands and complete additional options such as `ZADD INCR` if desired.
 - **Expiration cleanup:** Improve cleanup scheduling and make its behavior configurable for larger databases.
 
-### 3. What data structures are used and why?
+### 2. What data structures are used and why?
 
 - **`ConcurrentHashMap`:** Stores keys and values in the main database and stores expiration deadlines by key.
 - **`TreeSet`:** Keeps sorted-set members ordered by score and then member name for range and rank queries.
@@ -195,6 +195,6 @@ Possible improvements include:
 - **Java records and interfaces:** `StringValue`, `ScoredMember`, and `Value` represent the supported value and member types.
 - **Arrays and lists:** Hold parsed command arguments and temporary results while processing requests.
 
-### 4. Does the implementation support multithreaded operations?
+### 3. Does the implementation support multithreaded operations?
 
 The Spring Boot server can receive requests from multiple threads. `Functions.execute()` is synchronized, so command execution is serialized to protect the in-memory state. `PersistenceService` also synchronizes log writes and replay. This favors simple, safe behavior over parallel command throughput. Future improvements could use finer-grained locking or a carefully designed asynchronous persistence approach while preserving command order.
