@@ -75,6 +75,12 @@ The application uses an append-only command log to rebuild its in-memory data wh
 
 The Java log is separate from the Python project's `log.txt`. The log is not compacted, and snapshots are not implemented.
 
+### Example command log
+
+This screenshot shows sample commands recorded in the Java append-only log. Timestamped entries are used during replay to restore data and expiration deadlines.
+
+![Example Java command log](images/java-command-log.png)
+
 ## Functions Implemented
 
 Commands are case-insensitive. For JSON requests, put command arguments in the `arguments` array. Successful responses are returned in a `result` field; command errors return HTTP 400.
@@ -169,3 +175,26 @@ mvn test
 - Keys and values containing spaces are not supported by the whitespace-based command parser.
 - Cleanup samples keys only when the in-memory database has more than 100 entries; expired, unsampled keys may remain until a later cleanup or access.
 - The append-only log is not compacted or rotated, and snapshots are not implemented.
+
+## Questions
+
+### 2. What further improvements could be made?
+
+Possible improvements include:
+
+- **Log optimization:** Compact or combine log entries to reduce startup replay time and file growth.
+- **Snapshotting:** Periodically save the current database state so startup does not need to replay the entire log.
+- **Command coverage:** Implement more Redis-like commands and complete additional options such as `ZADD INCR` if desired.
+- **Expiration cleanup:** Improve cleanup scheduling and make its behavior configurable for larger databases.
+
+### 3. What data structures are used and why?
+
+- **`ConcurrentHashMap`:** Stores keys and values in the main database and stores expiration deadlines by key.
+- **`TreeSet`:** Keeps sorted-set members ordered by score and then member name for range and rank queries.
+- **`HashMap`:** Maps sorted-set member names to scores for efficient lookup and updates.
+- **Java records and interfaces:** `StringValue`, `ScoredMember`, and `Value` represent the supported value and member types.
+- **Arrays and lists:** Hold parsed command arguments and temporary results while processing requests.
+
+### 4. Does the implementation support multithreaded operations?
+
+The Spring Boot server can receive requests from multiple threads. `Functions.execute()` is synchronized, so command execution is serialized to protect the in-memory state. `PersistenceService` also synchronizes log writes and replay. This favors simple, safe behavior over parallel command throughput. Future improvements could use finer-grained locking or a carefully designed asynchronous persistence approach while preserving command order.

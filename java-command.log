@@ -1,0 +1,7 @@
+SET name Ragib
+ZADD scores 2 Bob 1 Alice
+ZADD scores 100 Ragib
+ZADD scores 10 Imran
+EXPIRE name 10
+1.792669050648E9 ZADD scores 64 MBA
+1.792669075068E9 DELETE name

@@ -18,16 +18,18 @@ public class Controller {
 
     public Controller(Functions functions) {
         this.functions = functions;
+
     }
 
     @GetMapping("/")
     public String welcome() {
         return "Hello!!! Welcome to REDIS_CLONE!!!";
-    }
+     }
 
     @GetMapping("/curr_status")
     public String status() {
         return functions.currentStatus();
+
     }
 
     @GetMapping("/api/command")
@@ -38,6 +40,7 @@ public class Controller {
     @GetMapping("/{command:.+}")
     public String compatibilityCommand(@PathVariable("command") String command) {
         return functions.execute(command);
+        
     }
 
     @PostMapping("/api/command")
@@ -50,7 +53,6 @@ public class Controller {
     public ResponseEntity<CommandResponse> handleCommandError(CommandException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CommandResponse(exception.getMessage()));
     }
-
     public record CommandRequest(String command, java.util.List<String> arguments) {
         public CommandRequest {
             if (command == null || arguments == null) {
